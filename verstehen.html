@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verstehen – Warum der PatternShift so schwer ist</title>
+<meta name="description" content="Die Wissenschaft hinter dem PatternShift: Warum alte Muster so hartnäckig sind – und wie man sie trotzdem bricht.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0a0a0c;
+  --bg-card: #131318;
+  --accent: #c8ff2e;
+  --accent-dim: #a0cc24;
+  --old: #ff6b4a;
+  --new: #2effc8;
+  --science: #a78bfa;
+  --text: #e8e8ec;
+  --text-dim: #8a8a9a;
+  --text-muted: #55556a;
+  --border: rgba(255,255,255,0.06);
+  --serif: 'Instrument Serif', Georgia, serif;
+  --sans: 'DM Sans', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans); background: var(--bg); color: var(--text);
+  line-height: 1.65; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 9999;
+}
+
+/* ── NAV ── */
+.site-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(10,10,12,0.85);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.site-nav-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 56px; padding: 0 2rem;
+}
+
+.site-nav .logo { font-family: var(--serif); font-size: 1.2rem; color: var(--text); text-decoration: none; }
+.site-nav .logo em { color: var(--accent); font-style: italic; }
+
+.nav-links { display: flex; gap: 0.3rem; }
+
+.nav-links a {
+  font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--text-muted); text-decoration: none;
+  padding: 0.5rem 1rem; border-radius: 8px; transition: color 0.3s, background 0.3s;
+}
+
+.nav-links a:hover { color: var(--accent); background: rgba(200,255,46,0.05); }
+.nav-links a.active { color: var(--science); background: rgba(167,139,250,0.08); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 55vh;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 6rem 2rem 4rem;
+  max-width: 800px; margin: 0 auto;
+  position: relative;
+}
+
+.hero::before {
+  content: ''; position: absolute;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(167,139,250,0.06) 0%, transparent 70%);
+  top: 10%; left: -200px; pointer-events: none;
+}
+
+.hero .tag {
+  font-family: var(--mono); font-size: 0.7rem; color: var(--science);
+  letter-spacing: 0.25em; text-transform: uppercase;
+  margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+}
+
+.hero h1 {
+  font-family: var(--serif); font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 400; line-height: 1.1; letter-spacing: -0.02em;
+  opacity: 0; animation: fadeUp 1s 0.4s forwards;
+}
+
+.hero h1 em { color: var(--science); font-style: italic; }
+
+.hero .lead {
+  font-size: clamp(1.05rem, 1.6vw, 1.25rem); color: var(--text-dim);
+  font-weight: 300; margin-top: 1.5rem; max-width: 600px;
+  opacity: 0; animation: fadeUp 1s 0.7s forwards;
+}
+
+/* ── BLOG CARDS ── */
+.blog-section {
+  max-width: 900px; margin: 0 auto; padding: 2rem 2rem 5rem;
+}
+
+.blog-card {
+  display: flex; gap: 2.5rem; align-items: flex-start;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 24px; padding: 3rem;
+  text-decoration: none; color: var(--text);
+  margin-bottom: 2rem;
+  position: relative; overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), border-color 0.3s, box-shadow 0.4s;
+}
+
+.blog-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(167,139,250,0.2);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+}
+
+.blog-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  opacity: 0; transition: opacity 0.3s;
+}
+
+.blog-card:hover::before { opacity: 1; }
+
+.blog-card.blog-orange::before { background: linear-gradient(90deg, var(--old), var(--accent)); }
+.blog-card.blog-purple::before { background: linear-gradient(90deg, var(--science), var(--accent)); }
+
+.blog-card .blog-num {
+  font-family: var(--serif);
+  font-size: clamp(4rem, 8vw, 6rem);
+  font-weight: 400;
+  line-height: 1;
+  flex-shrink: 0;
+  opacity: 0.06;
+}
+
+.blog-card.blog-orange .blog-num { color: var(--old); opacity: 0.12; }
+.blog-card.blog-purple .blog-num { color: var(--science); opacity: 0.12; }
+
+.blog-card-content { flex: 1; }
+
+.blog-card .blog-tag {
+  font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.15em;
+  text-transform: uppercase; margin-bottom: 0.8rem;
+}
+
+.blog-card.blog-orange .blog-tag { color: var(--old); }
+.blog-card.blog-purple .blog-tag { color: var(--science); }
+
+.blog-card h2 {
+  font-family: var(--serif); font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 400; line-height: 1.2; margin-bottom: 0.8rem;
+}
+
+.blog-card .blog-desc {
+  font-size: 1rem; color: var(--text-dim); font-weight: 300; line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.blog-card .blog-meta {
+  display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap;
+}
+
+.blog-card .meta-item {
+  font-family: var(--mono); font-size: 0.65rem; color: var(--text-muted);
+  letter-spacing: 0.1em; text-transform: uppercase;
+}
+
+.blog-card .read-link {
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em;
+  text-transform: uppercase; transition: transform 0.3s;
+  display: inline-flex; align-items: center; gap: 0.5rem;
+}
+
+.blog-card.blog-orange .read-link { color: var(--old); }
+.blog-card.blog-purple .read-link { color: var(--science); }
+
+.blog-card:hover .read-link { transform: translateX(4px); }
+
+/* ── TOPICS ── */
+.topics-preview {
+  display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;
+}
+
+.topic-chip {
+  font-size: 0.7rem; padding: 0.3rem 0.7rem; border-radius: 6px;
+  color: var(--text-muted); background: rgba(255,255,255,0.04);
+}
+
+/* ── CROSS-LINK ── */
+.cross-link {
+  max-width: 700px; margin: 0 auto; padding: 0 2rem 5rem;
+}
+
+.cross-card {
+  display: block; text-decoration: none;
+  background: linear-gradient(135deg, rgba(200,255,46,0.04), transparent);
+  border: 1px solid rgba(200,255,46,0.08);
+  border-radius: 20px; padding: 2.5rem; text-align: center;
+  transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), border-color 0.3s;
+}
+
+.cross-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(200,255,46,0.2);
+}
+
+/* ── FOOTER ── */
+.site-footer { text-align: center; padding: 4rem 2rem; border-top: 1px solid var(--border); }
+.site-footer .flogo { font-family: var(--serif); font-size: 1.5rem; margin-bottom: 0.5rem; }
+.site-footer .flogo em { color: var(--accent); font-style: italic; }
+.site-footer p { color: var(--text-muted); font-size: 0.82rem; }
+.site-footer a { color: var(--accent-dim); text-decoration: none; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0; transform: translateY(40px);
+  transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1);
+}
+
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 700px) {
+  .blog-card { flex-direction: column; gap: 1rem; padding: 2rem; }
+  .blog-card .blog-num { font-size: 3rem; }
+  .nav-links a { padding: 0.5rem 0.6rem; font-size: 0.65rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a href="index.html" class="logo">Pattern<em>Shift</em></a>
+    <div class="nav-links">
+      <a href="beispiele.html">Entdecken</a>
+      <a href="verstehen.html" class="active">Verstehen</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="tag">Verstehen</div>
+  <h1>Warum der Shift so <em>schwer</em> ist</h1>
+  <p class="lead">Die Psychologie und Neurowissenschaft hinter dem PatternShift. Warum unser Gehirn alte Muster verteidigt – und wie man es trotzdem überlisten kann.</p>
+</header>
+
+<section class="blog-section">
+
+  <a href="blog-warum-du-den-shift-nicht-merkst.html" class="blog-card blog-orange reveal">
+    <div class="blog-num">01</div>
+    <div class="blog-card-content">
+      <div class="blog-tag">Blog · Psychologie</div>
+      <h2>Warum du den Shift nicht merkst</h2>
+      <p class="blog-desc">5 Gründe, warum wir neue Werkzeuge in alte Muster pressen – und damit 80% ihres Potenzials verschenken. Über unsichtbare Brillen, bedrohte Identitäten und den sozialen Klebstoff, der Veränderung blockiert.</p>
+      <div class="topics-preview">
+        <span class="topic-chip">Unsichtbare Muster</span>
+        <span class="topic-chip">Bewährtheits-Anker</span>
+        <span class="topic-chip">Identität</span>
+        <span class="topic-chip">Sozialer Klebstoff</span>
+        <span class="topic-chip">Henne-Ei-Problem</span>
+      </div>
+      <div class="blog-meta">
+        <span class="meta-item">8 Min. Lesezeit</span>
+        <span class="meta-item">5 Gründe</span>
+        <span class="read-link">Lesen →</span>
+      </div>
+    </div>
+  </a>
+
+  <a href="blog-dein-gehirn-will-den-shift-nicht.html" class="blog-card blog-purple reveal">
+    <div class="blog-num">02</div>
+    <div class="blog-card-content">
+      <div class="blog-tag">Blog · Wissenschaft</div>
+      <h2>Dein Gehirn will den Shift nicht</h2>
+      <p class="blog-desc">Was Piaget, Kahneman und Kegan über unser Denken verraten: Warum nur ~35% abstrakt denken, warum System 1 immer gewinnt und warum der Arbeitsspeicher beim PatternShift überläuft.</p>
+      <div class="topics-preview">
+        <span class="topic-chip">Piaget</span>
+        <span class="topic-chip">Kegan</span>
+        <span class="topic-chip">Kahneman</span>
+        <span class="topic-chip">Cognitive Load</span>
+        <span class="topic-chip">Metakognition</span>
+      </div>
+      <div class="blog-meta">
+        <span class="meta-item">10 Min. Lesezeit</span>
+        <span class="meta-item">5 Kapitel</span>
+        <span class="read-link">Lesen →</span>
+      </div>
+    </div>
+  </a>
+
+</section>
+
+<div class="cross-link">
+  <a href="beispiele.html" class="cross-card reveal">
+    <div style="font-size:2rem;margin-bottom:1rem;">🔍</div>
+    <h3 style="font-family:var(--serif);font-size:1.5rem;font-weight:400;color:var(--text);margin-bottom:0.6rem;">Den Shift im Alltag entdecken</h3>
+    <p style="font-size:0.95rem;color:var(--text-dim);font-weight:300;margin-bottom:1rem;">30 konkrete Beispiele aus Mobilität, Gesundheit, Arbeit, Kreativität und mehr.</p>
+    <span style="font-family:var(--mono);font-size:0.72rem;color:var(--accent);letter-spacing:0.12em;text-transform:uppercase;">Alle Beispiele →</span>
+  </a>
+</div>
+
+<footer class="site-footer">
+  <div class="flogo">Pattern<em>Shift</em></div>
+  <p>Ein Konzept von Chris H. Leeb · <a href="mailto:info@cleebration.com">info@cleebration.com</a></p>
+  <p style="margin-top: 0.5rem;">© 2023–2026 cleebration.com</p>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 100);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

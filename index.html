@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>#PatternShift – Wenn alte Muster neue Werkzeuge bremsen</title>
+<meta name="description" content="Der echte Wandel passiert nicht in der Technologie – sondern im Kopf. 30 Beispiele und die Wissenschaft dahinter.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0a0a0c;
+  --bg-card: #131318;
+  --surface: #1e1e28;
+  --accent: #c8ff2e;
+  --accent-dim: #a0cc24;
+  --old: #ff6b4a;
+  --new: #2effc8;
+  --science: #a78bfa;
+  --text: #e8e8ec;
+  --text-dim: #8a8a9a;
+  --text-muted: #55556a;
+  --border: rgba(255,255,255,0.06);
+  --serif: 'Instrument Serif', Georgia, serif;
+  --sans: 'DM Sans', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── NAV ── */
+.site-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(10,10,12,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.site-nav-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 56px; padding: 0 2rem;
+}
+
+.site-nav .logo { font-family: var(--serif); font-size: 1.2rem; color: var(--text); text-decoration: none; }
+.site-nav .logo em { color: var(--accent); font-style: italic; }
+
+.nav-links { display: flex; gap: 0.3rem; }
+
+.nav-links a {
+  font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--text-muted); text-decoration: none;
+  padding: 0.5rem 1rem; border-radius: 8px; transition: color 0.3s, background 0.3s;
+}
+
+.nav-links a:hover { color: var(--accent); background: rgba(200,255,46,0.05); }
+.nav-links a.active { color: var(--accent); background: rgba(200,255,46,0.08); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  text-align: center; padding: 6rem 2rem 4rem; position: relative; overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute; width: 900px; height: 900px;
+  background: radial-gradient(circle, rgba(200,255,46,0.06) 0%, transparent 60%);
+  top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none;
+}
+
+.hero::after {
+  content: '';
+  position: absolute; width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(167,139,250,0.04) 0%, transparent 70%);
+  bottom: 5%; right: -10%; pointer-events: none;
+}
+
+.hero-hash {
+  font-family: var(--mono); font-size: clamp(0.8rem, 1.2vw, 1rem);
+  color: var(--accent); letter-spacing: 0.35em; text-transform: uppercase;
+  margin-bottom: 2rem; opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+}
+
+.hero h1 {
+  font-family: var(--serif); font-size: clamp(3rem, 8vw, 7.5rem); font-weight: 400;
+  line-height: 1.05; max-width: 900px; letter-spacing: -0.02em;
+  opacity: 0; animation: fadeUp 1s 0.4s forwards;
+}
+
+.hero h1 em { font-style: italic; color: var(--accent); }
+
+.hero-sub {
+  font-size: clamp(1rem, 1.8vw, 1.3rem); color: var(--text-dim);
+  max-width: 620px; margin-top: 2rem; font-weight: 300;
+  opacity: 0; animation: fadeUp 1s 0.7s forwards;
+}
+
+.hero-ctas {
+  display: flex; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap; justify-content: center;
+  opacity: 0; animation: fadeUp 0.8s 1s forwards;
+}
+
+.hero-ctas a {
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em;
+  text-transform: uppercase; padding: 0.9rem 2rem; border-radius: 50px;
+  text-decoration: none; transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.hero-ctas a:hover { transform: translateY(-2px); }
+
+.hero-ctas .btn-primary {
+  color: var(--bg); background: var(--accent);
+}
+
+.hero-ctas .btn-primary:hover { box-shadow: 0 8px 30px rgba(200,255,46,0.2); }
+
+.hero-ctas .btn-secondary {
+  color: var(--science); border: 1px solid rgba(167,139,250,0.25); background: transparent;
+}
+
+.hero-ctas .btn-secondary:hover { box-shadow: 0 8px 30px rgba(167,139,250,0.12); }
+
+/* ── CONCEPT ── */
+.concept {
+  max-width: 800px; margin: 0 auto; padding: 4rem 2rem 5rem; text-align: center;
+}
+
+.concept h2 {
+  font-family: var(--serif); font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 400; margin-bottom: 1.5rem;
+}
+
+.concept h2 em { color: var(--accent); font-style: italic; }
+
+.concept > p {
+  color: var(--text-dim); font-size: 1.1rem; line-height: 1.8;
+  font-weight: 300; max-width: 650px; margin: 0 auto;
+}
+
+.shift-types {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1.2rem; margin-top: 3rem;
+}
+
+.shift-type {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 16px; padding: 2rem 1.5rem; text-align: left;
+  transition: transform 0.3s, border-color 0.3s;
+}
+
+.shift-type:hover { transform: translateY(-4px); border-color: rgba(200,255,46,0.15); }
+
+.shift-type .st-num { font-family: var(--mono); font-size: 0.65rem; color: var(--accent); letter-spacing: 0.15em; margin-bottom: 0.7rem; }
+.shift-type h3 { font-family: var(--serif); font-size: 1.25rem; font-weight: 400; margin-bottom: 0.4rem; }
+.shift-type p { font-size: 0.85rem; color: var(--text-dim); font-weight: 300; }
+
+/* ── AREAS ── */
+.areas { max-width: 1000px; margin: 0 auto; padding: 2rem 2rem 6rem; }
+
+.areas-header { text-align: center; margin-bottom: 3rem; }
+
+.areas-header h2 {
+  font-family: var(--serif); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 400;
+}
+
+.areas-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2rem;
+}
+
+.area-card {
+  border-radius: 24px; padding: 3rem; text-decoration: none;
+  display: flex; flex-direction: column; position: relative; overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), box-shadow 0.4s;
+  min-height: 420px;
+}
+
+.area-card:hover { transform: translateY(-8px); }
+
+.area-card.entdecken {
+  background: linear-gradient(160deg, #141820 0%, #0d1218 100%);
+  border: 1px solid rgba(200,255,46,0.1);
+}
+
+.area-card.entdecken:hover {
+  box-shadow: 0 20px 60px rgba(200,255,46,0.08), 0 0 0 1px rgba(200,255,46,0.2);
+}
+
+.area-card.verstehen {
+  background: linear-gradient(160deg, #171420 0%, #100d18 100%);
+  border: 1px solid rgba(167,139,250,0.1);
+}
+
+.area-card.verstehen:hover {
+  box-shadow: 0 20px 60px rgba(167,139,250,0.08), 0 0 0 1px rgba(167,139,250,0.2);
+}
+
+.area-glow {
+  position: absolute; width: 300px; height: 300px; border-radius: 50%;
+  filter: blur(80px); opacity: 0.12; pointer-events: none;
+  bottom: -100px; right: -80px;
+}
+
+.area-card.entdecken .area-glow { background: var(--accent); }
+.area-card.verstehen .area-glow { background: var(--science); }
+
+.area-tag {
+  font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.2em;
+  text-transform: uppercase; margin-bottom: 1.5rem; position: relative;
+}
+
+.area-card.entdecken .area-tag { color: var(--accent); }
+.area-card.verstehen .area-tag { color: var(--science); }
+
+.area-icon { font-size: 3rem; margin-bottom: 1.5rem; position: relative; }
+
+.area-card h3 {
+  font-family: var(--serif); font-size: clamp(2rem, 3.5vw, 2.6rem); font-weight: 400;
+  line-height: 1.15; margin-bottom: 1rem; color: var(--text); position: relative;
+}
+
+.area-desc {
+  font-size: 1rem; color: var(--text-dim); font-weight: 300; line-height: 1.7; flex: 1; position: relative;
+}
+
+.preview-strip {
+  display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1.5rem; position: relative;
+}
+
+.preview-chip {
+  font-size: 0.7rem; padding: 0.3rem 0.7rem; border-radius: 6px;
+  color: var(--text-muted); background: rgba(255,255,255,0.04);
+}
+
+.area-meta {
+  display: flex; align-items: center; gap: 1rem; margin-top: 2rem; position: relative;
+}
+
+.area-pill {
+  font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em;
+  text-transform: uppercase; padding: 0.4rem 0.9rem; border-radius: 50px;
+}
+
+.area-card.entdecken .area-pill { color: var(--accent); background: rgba(200,255,46,0.08); border: 1px solid rgba(200,255,46,0.15); }
+.area-card.verstehen .area-pill { color: var(--science); background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.15); }
+
+.area-arrow {
+  font-family: var(--mono); font-size: 1.2rem; transition: transform 0.3s;
+}
+
+.area-card.entdecken .area-arrow { color: var(--accent); }
+.area-card.verstehen .area-arrow { color: var(--science); }
+.area-card:hover .area-arrow { transform: translateX(6px); }
+
+/* ── FOOTER ── */
+.site-footer { text-align: center; padding: 4rem 2rem; border-top: 1px solid var(--border); }
+.site-footer .flogo { font-family: var(--serif); font-size: 1.5rem; margin-bottom: 0.5rem; }
+.site-footer .flogo em { color: var(--accent); font-style: italic; }
+.site-footer p { color: var(--text-muted); font-size: 0.82rem; }
+.site-footer a { color: var(--accent-dim); text-decoration: none; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0; transform: translateY(40px);
+  transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1);
+}
+
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 768px) {
+  .areas-grid { grid-template-columns: 1fr; }
+  .shift-types { grid-template-columns: 1fr; }
+  .area-card { min-height: auto; padding: 2rem; }
+  .nav-links a { padding: 0.5rem 0.6rem; font-size: 0.65rem; }
+}
+
+@media (max-width: 480px) {
+  .hero h1 { font-size: 2.5rem; }
+  .hero { padding: 5rem 1.2rem 3rem; }
+  .hero-ctas { flex-direction: column; align-items: center; }
+}
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a href="index.html" class="logo">Pattern<em>Shift</em></a>
+    <div class="nav-links">
+      <a href="beispiele.html">Entdecken</a>
+      <a href="verstehen.html">Verstehen</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-hash">#PatternShift</div>
+  <h1>Neue Werkzeuge.<br><em>Alte Muster.</em></h1>
+  <p class="hero-sub">Der echte Wandel passiert nicht in der Technologie&nbsp;– sondern im&nbsp;Kopf. Entdecke, was sich verändert. Verstehe, warum es so schwer ist.</p>
+  <div class="hero-ctas">
+    <a href="beispiele.html" class="btn-primary">Beispiele entdecken</a>
+    <a href="verstehen.html" class="btn-secondary">Hintergründe verstehen</a>
+  </div>
+</section>
+
+<section class="concept reveal">
+  <h2>Was ist ein <em>PatternShift</em>?</h2>
+  <p>Ein Pattern ist ein Denk- und Handlungsmuster, das wir aufgrund von Erfahrung verinnerlicht haben. Wir füllen es ständig mit neuen Inhalten – aber hinterfragen das Muster selbst nie. Genau hier setzt der PatternShift an.</p>
+  <div class="shift-types">
+    <div class="shift-type">
+      <div class="st-num">SHIFT 01</div>
+      <h3>Aktiv → Proaktiv</h3>
+      <p>Information kommt zu mir, statt dass ich sie suche.</p>
+    </div>
+    <div class="shift-type">
+      <div class="st-num">SHIFT 02</div>
+      <h3>Zeitgebunden → Frei</h3>
+      <p>Services richten sich nicht mehr nach Öffnungszeiten oder Sendeterminen.</p>
+    </div>
+    <div class="shift-type">
+      <div class="st-num">SHIFT 03</div>
+      <h3>Einheitlich → Individuell</h3>
+      <p>Systeme passen sich dem Einzelnen an, statt alle gleich zu behandeln.</p>
+    </div>
+  </div>
+</section>
+
+<section class="areas">
+  <div class="areas-header reveal">
+    <h2>Zwei Wege, den Shift zu begreifen</h2>
+  </div>
+  <div class="areas-grid">
+    <a href="beispiele.html" class="area-card entdecken reveal">
+      <div class="area-glow"></div>
+      <div class="area-tag">Bereich 01</div>
+      <div class="area-icon">🔍</div>
+      <h3>Entdecken</h3>
+      <p class="area-desc">30 konkrete PatternShifts aus dem Alltag. Von Mobilität über Gesundheit bis Kreativität – jedes Beispiel zeigt das alte Muster, das neue Muster und den Shift im Kopf.</p>
+      <div class="preview-strip">
+        <span class="preview-chip">Mobilität</span>
+        <span class="preview-chip">Medien</span>
+        <span class="preview-chip">Gesundheit</span>
+        <span class="preview-chip">Arbeit</span>
+        <span class="preview-chip">Bildung</span>
+        <span class="preview-chip">+5 mehr</span>
+      </div>
+      <div class="area-meta">
+        <span class="area-pill">30 Beispiele · 10 Kategorien</span>
+        <span class="area-arrow">→</span>
+      </div>
+    </a>
+    <a href="verstehen.html" class="area-card verstehen reveal">
+      <div class="area-glow"></div>
+      <div class="area-tag">Bereich 02</div>
+      <div class="area-icon">🧠</div>
+      <h3>Verstehen</h3>
+      <p class="area-desc">Warum fällt der PatternShift so schwer? Was Piaget, Kahneman und Kegan über unser Denken verraten – und warum das Gehirn aktiv gegen Veränderung arbeitet.</p>
+      <div class="preview-strip">
+        <span class="preview-chip">Unsichtbare Muster</span>
+        <span class="preview-chip">Identität</span>
+        <span class="preview-chip">Kognition</span>
+        <span class="preview-chip">Neurowissenschaft</span>
+      </div>
+      <div class="area-meta">
+        <span class="area-pill">2 Blogbeiträge</span>
+        <span class="area-arrow">→</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="flogo">Pattern<em>Shift</em></div>
+  <p>Ein Konzept von Chris H. Leeb · <a href="mailto:info@cleebration.com">info@cleebration.com</a></p>
+  <p style="margin-top: 0.5rem;">© 2023–2026 cleebration.com</p>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

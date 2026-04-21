@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Warum du den Shift nicht merkst – #PatternShift Blog</title>
+<meta name="description" content="5 Gründe, warum wir in alten Mustern feststecken – und wie wir den PatternShift trotzdem schaffen.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0a0a0c;
+  --bg-card: #131318;
+  --bg-card-hover: #1a1a22;
+  --surface: #1e1e28;
+  --accent: #c8ff2e;
+  --accent-dim: #a0cc24;
+  --old: #ff6b4a;
+  --old-bg: rgba(255,107,74,0.08);
+  --new: #2effc8;
+  --new-bg: rgba(46,255,200,0.06);
+  --text: #e8e8ec;
+  --text-dim: #8a8a9a;
+  --text-muted: #55556a;
+  --border: rgba(255,255,255,0.06);
+  --serif: 'Instrument Serif', Georgia, serif;
+  --sans: 'DM Sans', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── NAV BAR ── */
+.top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: rgba(10,10,12,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+}
+
+.top-nav-inner {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+}
+
+.top-nav .logo {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.top-nav .logo em { color: var(--accent); font-style: italic; }
+
+.top-nav .back-link {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.top-nav .back-link:hover { color: var(--accent); }
+
+/* ── HERO ── */
+.blog-hero {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 6rem 2rem 4rem;
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.blog-hero::before {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(255,107,74,0.06) 0%, transparent 70%);
+  top: 20%;
+  right: -200px;
+  pointer-events: none;
+}
+
+.blog-hero .tag {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--accent);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.2s forwards;
+}
+
+.blog-hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  opacity: 0;
+  animation: fadeUp 1s 0.4s forwards;
+}
+
+.blog-hero h1 em { color: var(--old); font-style: italic; }
+
+.blog-hero .lead {
+  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+  color: var(--text-dim);
+  font-weight: 300;
+  margin-top: 1.5rem;
+  max-width: 600px;
+  opacity: 0;
+  animation: fadeUp 1s 0.7s forwards;
+}
+
+.blog-hero .meta {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  margin-top: 2rem;
+  opacity: 0;
+  animation: fadeUp 0.8s 1s forwards;
+}
+
+/* ── ARTICLE BODY ── */
+.article-body {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 2rem 5rem;
+}
+
+.article-body p {
+  font-size: 1.08rem;
+  line-height: 1.85;
+  color: var(--text-dim);
+  margin-bottom: 1.5rem;
+  font-weight: 300;
+}
+
+.article-body p strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.article-body p em {
+  color: var(--accent-dim);
+  font-style: italic;
+}
+
+/* ── SECTION NUMBERS ── */
+.grund-section {
+  margin: 4rem 0 2.5rem;
+  position: relative;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1);
+}
+
+.grund-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.grund-number {
+  font-family: var(--serif);
+  font-size: clamp(5rem, 12vw, 9rem);
+  font-weight: 400;
+  color: rgba(200,255,46,0.04);
+  position: absolute;
+  top: -2.5rem;
+  left: -1rem;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.grund-section h2 {
+  font-family: var(--serif);
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 0.4rem;
+  position: relative;
+}
+
+.grund-section .grund-subtitle {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--old);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+/* ── QUOTE BLOCKS ── */
+.inner-voice {
+  background: var(--bg-card);
+  border-left: 3px solid var(--old);
+  border-radius: 0 12px 12px 0;
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+  position: relative;
+}
+
+.inner-voice::before {
+  content: '💭';
+  position: absolute;
+  top: -12px;
+  left: 12px;
+  font-size: 1.2rem;
+}
+
+.inner-voice p {
+  font-style: italic;
+  color: var(--text) !important;
+  font-size: 1rem !important;
+  margin: 0 !important;
+  font-weight: 400 !important;
+}
+
+/* ── SHIFT BLOCKS ── */
+.shift-block {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  margin: 2rem 0;
+}
+
+.shift-block .shift-title {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--new);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.shift-block p {
+  color: var(--text) !important;
+  font-weight: 400 !important;
+  font-size: 1rem !important;
+}
+
+/* ── METAPHOR CARDS ── */
+.metaphor {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  background: linear-gradient(135deg, rgba(200,255,46,0.03), transparent);
+  border: 1px solid rgba(200,255,46,0.08);
+  border-radius: 16px;
+  padding: 2rem;
+  margin: 2.5rem 0;
+}
+
+.metaphor-icon {
+  font-size: 2.5rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.metaphor-text h3 {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: var(--accent);
+}
+
+.metaphor-text p {
+  font-size: 0.95rem !important;
+  margin: 0 !important;
+}
+
+/* ── CHECKLIST ── */
+.checklist {
+  list-style: none;
+  margin: 2rem 0;
+  padding: 0;
+}
+
+.checklist li {
+  position: relative;
+  padding: 0.8rem 0 0.8rem 2.5rem;
+  font-size: 1rem;
+  color: var(--text-dim);
+  border-bottom: 1px solid var(--border);
+}
+
+.checklist li:last-child { border-bottom: none; }
+
+.checklist li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-family: var(--mono);
+  font-weight: 500;
+}
+
+/* ── CONCLUSION ── */
+.conclusion {
+  margin-top: 4rem;
+  padding-top: 3rem;
+  border-top: 1px solid var(--border);
+}
+
+.conclusion h2 {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 400;
+  margin-bottom: 1.5rem;
+}
+
+.conclusion h2 em { color: var(--new); font-style: italic; }
+
+/* ── CTA ── */
+.cta-box {
+  background: linear-gradient(135deg, rgba(200,255,46,0.06), rgba(46,255,200,0.04));
+  border: 1px solid rgba(200,255,46,0.12);
+  border-radius: 20px;
+  padding: 3rem;
+  text-align: center;
+  margin: 3rem 0;
+}
+
+.cta-box h3 {
+  font-family: var(--serif);
+  font-size: 1.6rem;
+  margin-bottom: 0.8rem;
+}
+
+.cta-box p {
+  color: var(--text-dim) !important;
+  font-size: 1rem !important;
+  margin-bottom: 1.5rem !important;
+}
+
+.cta-box a {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: var(--accent);
+  padding: 0.9rem 2.2rem;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.cta-box a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(200,255,46,0.2);
+}
+
+/* ── FOOTER ── */
+.site-footer {
+  text-align: center;
+  padding: 4rem 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.site-footer .logo {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.site-footer .logo em { color: var(--accent); font-style: italic; }
+
+.site-footer p {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+
+.site-footer a {
+  color: var(--accent-dim);
+  text-decoration: none;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+  .blog-hero { min-height: 55vh; padding-top: 5rem; }
+  .blog-hero h1 { font-size: 2.2rem; }
+  .metaphor { flex-direction: column; gap: 1rem; }
+  .metaphor-icon { font-size: 2rem; }
+  .article-body { padding: 0 1.2rem 4rem; }
+  .inner-voice, .shift-block, .cta-box { padding: 1.5rem; }
+  .grund-number { font-size: 5rem; top: -1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="top-nav">
+  <div class="top-nav-inner">
+    <a href="index.html" class="logo">Pattern<em>Shift</em></a>
+    <div style="display:flex;gap:0.3rem;">
+      <a href="beispiele.html" class="back-link">Entdecken</a>
+      <a href="verstehen.html" class="back-link" style="color:var(--accent);">Verstehen</a>
+    </div>
+  </div>
+</nav>
+
+<header class="blog-hero">
+  <div class="tag">#PatternShift · Verstehen</div>
+  <h1>Warum du den Shift <em>nicht merkst</em></h1>
+  <p class="lead">5 Gründe, warum wir neue Werkzeuge in alte Muster pressen – und damit 80% ihres Potenzials verschenken.</p>
+  <div class="meta">Chris H. Leeb · März 2026 · 8 Min. Lesezeit</div>
+</header>
+
+<!-- ── ARTICLE ── -->
+<article class="article-body">
+
+  <p>Du hast ein Smartphone. Du nutzt Apps. Du zahlst kontaktlos, streamst Musik, navigierst per GPS. Du bist digital – richtig? <strong>Falsch.</strong> Zumindest nicht automatisch. Denn die entscheidende Frage ist nicht, <em>welche Werkzeuge</em> du benutzt, sondern <em>mit welchem Denkmuster</em> du sie benutzt.</p>
+
+  <p>Und genau hier liegt das Problem: Die meisten von uns tun neue Dinge auf alte Art. Wir nehmen ein revolutionäres Werkzeug – und zwängen es in ein Muster, das aus einer anderen Zeit stammt. Nicht aus Dummheit. Nicht aus Faulheit. Sondern weil das Muster selbst <strong>unsichtbar</strong> ist.</p>
+
+  <p>Hier sind fünf Gründe, warum der PatternShift so verdammt schwer ist.</p>
+
+  <!-- ══════ GRUND 1 ══════ -->
+  <div class="grund-section">
+    <div class="grund-number">01</div>
+    <div class="grund-subtitle">Die unsichtbare Brille</div>
+    <h2>Das Muster ist unsichtbar</h2>
+  </div>
+
+  <p>Stell dir eine Brille vor, die du seit 30 Jahren trägst. Du siehst die Welt durch sie hindurch – aber du siehst die Brille selbst nicht. Du hast vergessen, dass du sie trägst.</p>
+
+  <p>Genau so funktionieren Muster. Ein Muster ist kein bewusster Gedanke. Es ist die <strong>Struktur, in der du denkst</strong>, bevor du überhaupt anfängst zu denken. Du hinterfragst den Inhalt ständig – „Welcher Bus? Welche Linie? Welche Uhrzeit?" – aber du hinterfragst nie die Frage selbst.</p>
+
+  <div class="metaphor">
+    <div class="metaphor-icon">🐟</div>
+    <div class="metaphor-text">
+      <h3>Der Fisch und das Wasser</h3>
+      <p>Zwei junge Fische schwimmen dahin. Ein älterer kommt vorbei und fragt: „Na, wie ist das Wasser?" Die beiden jungen Fische schauen sich an: „Was zum Teufel ist Wasser?" – Das Muster ist dein Wasser. Du merkst es nicht, weil du nie außerhalb davon warst.</p>
+    </div>
+  </div>
+
+  <p>Wenn jemand die Öffi-App öffnet und dort manuell seine Haltestelle sucht, die Abfahrtszeit nachschlägt und die Route im Kopf plant – dann nutzt er ein digitales Werkzeug mit einem analogen Muster. Er <em>glaubt</em>, er sei modern. Aber er hat nur den Fahrplan digitalisiert, nicht sein Denken.</p>
+
+  <div class="shift-block">
+    <div class="shift-title">Der Shift wäre</div>
+    <p>Das Smartphone weiß, wo ich bin und wann es ist. Die Information muss nicht mehr von mir gesucht, sondern von der Technologie <strong>geliefert</strong> werden. Die Frage ist nicht „Wann fährt mein Bus?" – die Frage ist „Wie komme ich am schnellsten dort hin?" Und selbst diese Frage muss ich nicht mehr stellen.</p>
+  </div>
+
+  <!-- ══════ GRUND 2 ══════ -->
+  <div class="grund-section">
+    <div class="grund-number">02</div>
+    <div class="grund-subtitle">Der Bewährtheits-Anker</div>
+    <h2>Das alte Muster hat funktioniert</h2>
+  </div>
+
+  <p>30 Jahre lang hast du mit Straßenkarten navigiert. Es hat funktioniert. Du bist angekommen. Vielleicht mal 20 Minuten zu spät, vielleicht mal falsch abgebogen – aber du bist <em>angekommen</em>.</p>
+
+  <p>Und das ist das tückische Argument: <strong>„Es funktioniert doch."</strong></p>
+
+  <p>Ja, es funktioniert. Aber die Frage ist nicht, ob es funktioniert – sondern ob es die beste Version dessen ist, was möglich wäre. Der Kutscher ist auch angekommen. Die Frage war nie, ob die Kutsche fährt.</p>
+
+  <div class="inner-voice">
+    <p>„Ich habe 25 Jahre so Fotos gemacht, und die sind alle gut geworden. Warum soll ich plötzlich 50 Bilder schießen und die KI auswählen lassen?"</p>
+  </div>
+
+  <p>Das Bewährte erzeugt ein tiefes Sicherheitsgefühl. Und hier kommt das Paradox: <strong>Den Nutzen des neuen Musters erkennst du erst, wenn du das alte losgelassen hast.</strong> Vorher nicht. Es ist, als müsstest du ins Wasser springen, um zu merken, dass du schwimmen kannst. Solange du am Rand stehst und das Wasser analysierst, wirst du nie springen.</p>
+
+  <!-- ══════ GRUND 3 ══════ -->
+  <div class="grund-section">
+    <div class="grund-number">03</div>
+    <div class="grund-subtitle">Die bedrohte Identität</div>
+    <h2>Mein Können hängt am alten Muster</h2>
+  </div>
+
+  <p>Jetzt wird es persönlich. Und das ist der Grund, über den niemand spricht.</p>
+
+  <p>Viele unserer Muster sind nicht einfach Gewohnheiten. Sie sind <strong>Teil unserer Identität.</strong> „Ich bin jemand, der sich in jeder Stadt ohne Navi zurechtfindet." „Ich bin jemand, der einen perfekten Brief schreiben kann." „Ich bin jemand, der Fahrpläne lesen kann."</p>
+
+  <p>Wenn die Technologie diese Fähigkeit überflüssig macht, dann bedroht das nicht eine Routine – das bedroht mein Selbstbild. Und gegen Identitätsbedrohungen wehren wir uns mit allem, was wir haben.</p>
+
+  <div class="inner-voice">
+    <p>„Ich brauche keine KI, die mir sagt, wie ich schreiben soll. Ich bin Texter – das ist mein Beruf!"</p>
+  </div>
+
+  <p>Das klingt nach Stolz. Und zum Teil ist es das. Aber dahinter steckt eine tiefere Angst: <em>Wenn die Maschine kann, was mich ausmacht – was macht mich dann noch aus?</em></p>
+
+  <div class="shift-block">
+    <div class="shift-title">Die ehrliche Antwort</div>
+    <p>Die KI ersetzt nicht dein Können. Sie verschiebt, <strong>wo</strong> dein Können gebraucht wird. Der Fotograf wird nicht überflüssig – aber seine Kompetenz verlagert sich von der perfekten Belichtung zur perfekten Bildauswahl und Story. Der Texter wird nicht ersetzt – aber sein Wert liegt nicht mehr im ersten Entwurf, sondern im Verfeinern, im Ton, in der Strategie.</p>
+  </div>
+
+  <!-- ══════ GRUND 4 ══════ -->
+  <div class="grund-section">
+    <div class="grund-number">04</div>
+    <div class="grund-subtitle">Das Henne-Ei-Problem</div>
+    <h2>Ich verstehe den Nutzen erst nachher</h2>
+  </div>
+
+  <p>Stell dir vor, jemand erklärt dir 1995 ein Smartphone: „Du hast ein Gerät, das gleichzeitig Telefon, Kamera, Landkarte, Walkman, Taschenrechner, Wecker, Notizbuch und Fernseher ist." Deine Antwort? Vermutlich: <strong>„Warum brauche ich das? Ich hab all diese Dinge schon."</strong></p>
+
+  <p>Das ist kein Mangel an Intelligenz. Es ist ein Mangel an Vorstellungskraft – und der ist strukturell bedingt. Du kannst den Nutzen eines neuen Musters nicht im Rahmen des alten Musters denken. Es ist, als würdest du versuchen, dir die Farbe Blau vorzustellen, wenn du nur Rot und Grün kennst.</p>
+
+  <div class="metaphor">
+    <div class="metaphor-icon">🚪</div>
+    <div class="metaphor-text">
+      <h3>Die verschlossene Tür</h3>
+      <p>Der PatternShift ist wie eine Tür, die nur von innen transparent ist. Von außen siehst du nichts – du musst erst hindurchgehen. Erst dann siehst du, was auf der anderen Seite ist. Und erst dann verstehst du, warum du nicht zurück willst.</p>
+    </div>
+  </div>
+
+  <p>Deshalb funktionieren Argumente bei PatternShifts so schlecht. Du kannst jemandem nicht erklären, warum Streaming besser ist als Fernsehen – du kannst es nur erleben lassen. <strong>PatternShifts werden nicht verstanden. Sie werden erfahren.</strong></p>
+
+  <!-- ══════ GRUND 5 ══════ -->
+  <div class="grund-section">
+    <div class="grund-number">05</div>
+    <div class="grund-subtitle">Der soziale Klebstoff</div>
+    <h2>Die Gruppe hält das Muster fest</h2>
+  </div>
+
+  <p>Muster sind selten individuell. Sie werden von der Gruppe getragen, verstärkt und verteidigt. Wenn alle im Büro noch Protokoll tippen, wirst du nicht derjenige sein, der sagt: „Die KI kann das in 30 Sekunden." Nicht weil du es nicht weißt – sondern weil du nicht auffallen willst.</p>
+
+  <p>Organisationen sind besonders anfällig. Je größer die Gruppe, desto stärker der Klebstoff. Es gibt Prozesse, Hierarchien, „Das haben wir immer so gemacht"-Sätze. Der PatternShift scheitert in Organisationen nicht an der Technologie – er scheitert an der Kultur.</p>
+
+  <div class="inner-voice">
+    <p>„Klar, das geht digital schneller. Aber bei uns muss das noch über drei Abteilungen gehen – das ist halt so."</p>
+  </div>
+
+  <p>Das „Das ist halt so" ist der Todessatz des PatternShifts. Er klingt pragmatisch, ist aber in Wahrheit eine Kapitulation vor dem alten Muster. Nicht weil Veränderung unmöglich wäre – sondern weil niemand den ersten Schritt machen will.</p>
+
+  <div class="shift-block">
+    <div class="shift-title">Was es braucht</div>
+    <p>Einen Kipppunkt. Eine Person oder eine kleine Gruppe, die es einfach <strong>tut</strong>. Die zeigt statt erklärt. Denn PatternShifts verbreiten sich nicht durch Argumente – sie verbreiten sich durch <strong>sichtbare Ergebnisse</strong>.</p>
+  </div>
+
+  <!-- ══════ FAZIT ══════ -->
+  <div class="conclusion grund-section">
+    <h2>Also: Wie schafft man den <em>Shift</em>?</h2>
+
+    <p>Wenn das Muster unsichtbar ist, die Identität bedroht, der Nutzen erst nachher sichtbar wird und die Gruppe bremst – wie soll dann irgendwer jemals seinen PatternShift machen?</p>
+
+    <p>Die ehrliche Antwort: <strong>Es beginnt mit der Erkenntnis, dass es ein Muster gibt.</strong> Das allein ist schon die halbe Arbeit. Denn sobald du die Brille siehst, kannst du sie absetzen.</p>
+
+    <p>Hier sind fünf erste Schritte:</p>
+
+    <ul class="checklist">
+      <li><strong>Frag dich bei jeder Routine:</strong> Mache ich das so, weil es die beste Option ist – oder weil ich es immer so gemacht habe?</li>
+      <li><strong>Ersetze „Das funktioniert doch" durch „Was wäre noch möglich?"</strong> – die gefährlichste Frage für alte Muster.</li>
+      <li><strong>Probier etwas 7 Tage lang anders.</strong> Nicht diskutieren, nicht analysieren – einfach tun. Der Nutzen zeigt sich erst in der Praxis.</li>
+      <li><strong>Beobachte Digital Natives.</strong> Nicht um sie zu imitieren, sondern um zu sehen, welche Fragen sie gar nicht mehr stellen.</li>
+      <li><strong>Trenn dein Können von deinem Werkzeug.</strong> Dein Wert als Mensch liegt nicht im Bedienen eines Tools – er liegt im Denken, Entscheiden und Gestalten.</li>
+    </ul>
+
+    <div class="cta-box">
+      <h3>Erkennst du deine Muster?</h3>
+      <p>30 konkrete Beispiele, die zeigen, wo der PatternShift in deinem Alltag stattfindet – und wo du ihn noch verpasst.</p>
+      <a href="index.html">Alle PatternShifts entdecken</a>
+    </div>
+  </div>
+
+</article>
+
+<!-- ── FOOTER ── -->
+<footer class="site-footer">
+  <div class="logo">Pattern<em>Shift</em></div>
+  <p>Ein Konzept von Chris H. Leeb · <a href="mailto:info@cleebration.com">info@cleebration.com</a></p>
+  <p style="margin-top: 0.5rem;">© 2023–2026 cleebration.com</p>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+
+document.querySelectorAll('.grund-section').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
